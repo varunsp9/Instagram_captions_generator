@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Image Captioning Web Application</title>
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                margin: 0;
+                padding: 0;
+            }
+            .container {
+                max-width: 800px;
+                margin: 0 auto;
+                padding: 20px;
+            }
+            h1 {
+                text-align: center;
+            }
+            form {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+            }
+            label, input[type="submit"] {
+                font-size: 18px;
+                margin-bottom: 10px;
+            }
+            input[type="file"] {
+                margin-bottom: 20px;
+            }
+            img {
+                max-width: 100%;
+                height: auto;
+            }
+            textarea {
+                width: 100%;
+                font-size: 18px;
+                margin-bottom: 20px;
+            }
+        </style>
+    </head>
+    <body>
+        <div class="container">
+            <h1>Image Captioning Web Application</h1>
+            <form method="post" enctype="multipart/form-data">
+                <label for="image">Select Image:</label><br>
+                <input type="file" id="image" name="image"><br><br>
+                <input type="submit" value="Submit">
+            </form>
+            {% if caption %}
+                <h2>Selected Image:</h2>
+                <img src="data:image/png;base64,{{ img_base64 }}" alt="Selected Image"><br><br>  
+                <h2>Generated Caption:</h2>
+                <textarea rows="4" cols="50">{{ caption }}</textarea><br><br>
+                <form method="post">
+                    <input type="hidden" name="temperature" value="{{ temperature }}">
+                    <input type="submit" value="Generate Instagram Post Captions">
+                </form><br><br>
+                {% if instagram_captions %}
+                    <h2>Instagram Post Captions:</h2>
+                    <ul>
+                        {% for instagram_caption in instagram_captions %}
+                            <li>{{ instagram_caption }}</li>
+                        {% endfor %}
+                    </ul><br><br>
+                    <form method="post">
+                        <input type="hidden" name="temperature" value="{{ temperature + 0.1 }}">
+                        <input type="submit" value="Increase Temperature">
+                    </form><br><br>
+                {% endif %}
+            {% endif %}
+        </div>
+    </body>
+</html>
